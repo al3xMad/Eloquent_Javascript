@@ -3,7 +3,7 @@
 
 ## Table of Contents
   
-  1. [ Values, Types, and Operators ] ( # values, types, and operators )
+  1. [ Values, Types, and Operators ] (# values, types, and operators )
 
 
 
