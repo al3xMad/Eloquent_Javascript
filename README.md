@@ -101,3 +101,162 @@ find a value’s type) and a ternary operator ( ?: ) to pick one of two values b
 on a third value.
 
 ## 2. Program structure
+
+####Bindings
+
+The special word (keyword) let indicates that this sentence is going to define a binding.
+The words var and const can also be used to create bindings, in a way similar to let.
+
+```javascript
+let one = 1, two = 2;
+console.log(one + two);
+// → 3
+var name = "Ayda";
+const greeting = "Hello "; (not going to ever change)
+console.log(greeting + name);
+// → Hello Ayda
+```
+
+####Binding names
+
+A binding name may include dollar signs ( $ ) or underscores ( _ ), but no other punctuation or special characters.
+The full list of keywords and reserved words is rather long:
+```javascript
+break case catch class const continue debugger default
+delete do else enum export extends false finally for
+function if implements import interface in instanceof let
+new package private protected public return static super
+switch this throw true try typeof var void while with yield
+```
+
+
+## 3. Functions
+
+####Arrow functions
+
+The arrow comes after the list of parameters, and is followed by the function’s
+body. It expresses something like “this input (the parameters) produces this
+result (the body)”.
+When there is only one parameter name, the parentheses around the param-
+eter list can be omitted. If the body is a single expression, rather than a block
+in braces, that expression will be returned from the function. So these two
+definitions of square do the same thing:
+```javascript
+const square1 = (x) => { return x * x; };
+const square2 = x => x * x;
+```
+When an arrow function has no parameters at all, its parameter list is just
+an empty set of parentheses.
+```javascript
+const horn = () => {
+console.log("Toot");
+};
+```
+
+####Optional Arguments
+
+JavaScript is extremely broad-minded about the number of arguments you
+pass to a function. If you pass too many, the extra ones are ignored. If you
+pass too few, the missing parameters get assigned the value undefined .
+
+####Closure
+
+A function that closes over some local bindings is called a closure. This behavior not only frees you from having to worry 
+about lifetimes of bindings but also makes it possible to use function
+values in some creative ways.
+With a slight change, we can turn the previous example into a way to create functions that multiply by an arbitrary amount.
+```javascript
+function multiplier(factor) {
+return number => number * factor;
+}
+let twice = multiplier(2);
+console.log(twice(5));
+// → 10
+```
+
+####Recursion
+
+Recursion allows some functions to be written in a different style.
+```javascript
+function power(base, exponent) {
+    if (exponent == 0) {
+        return 1;
+    } else {
+        return base * power(base, exponent - 1);
+    }
+}
+console.log(power(2, 3));
+// → 8
+```
+But this implementation has one problem: in typical JavaScript implementations, it’s about 3 times slower
+ than the looping version. Running through a simple loop is generally cheaper than calling a function multiple times.
+
+####Growing functions
+
+We want to write a program that prints two numbers, the numbers of cows
+and chickens on a farm, with the words Cows and Chickens after them, and
+zeros padded before both numbers so that they are always three digits long.
+
+007 Cows
+011 Chickens
+
+This asks for a function of two arguments. Let’s get coding.
+
+```javascript
+function printFarmInventory(cows, chickens) {
+let cowString = String(cows);
+while (cowString.length < 3) {
+cowString = "0" + cowString;
+}
+console.log(`${cowString} Cows`);
+let chickenString = String(chickens);
+while (chickenString.length < 3) {
+chickenString = "0" + chickenString;
+}
+console.log(`${chickenString} Chickens`);
+}
+printFarmInventory(7, 11);
+```
+
+But just as we are about to send the farmer the code
+(along with a hefty invoice), she calls and tells us she’s also started keeping
+pigs, and couldn’t we please extend the software to also print pigs?
+
+```javascript
+function printZeroPaddedWithLabel(number, label) {
+let numberString = String(number);
+while (numberString.length < 3) {
+numberString = "0" + numberString;
+}
+console.log(`${numberString} ${label}`);
+53}
+function printFarmInventory(cows, chickens, pigs) {
+printZeroPaddedWithLabel(cows, "Cows");
+printZeroPaddedWithLabel(chickens, "Chickens");
+printZeroPaddedWithLabel(pigs, "Pigs");
+}
+printFarmInventory(7, 11, 3);
+```
+
+It works! But that name, printZeroPaddedWithLabel , is a little awkward.
+It conflates three things—printing, zero-padding, and adding a label—into a
+single function.
+Instead of lifting out the repeated part of our program wholesale, let’s try
+to pick out a single concept.
+
+```javascript
+function zeroPad(number, width) {
+let string = String(number);
+while (string.length < width) {
+string = "0" + string;
+}
+return string;
+}
+function printFarmInventory(cows, chickens, pigs) {
+console.log(`${zeroPad(cows, 3)} Cows`);
+console.log(`${zeroPad(chickens, 3)} Chickens`);
+console.log(`${zeroPad(pigs, 3)} Pigs`);
+}
+printFarmInventory(7, 16, 3);
+```
+
