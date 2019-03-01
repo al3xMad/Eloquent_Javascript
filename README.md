@@ -260,3 +260,96 @@ console.log(`${zeroPad(pigs, 3)} Pigs`);
 printFarmInventory(7, 16, 3);
 ```
 
+## 4. Data Structures: Objects and arrays
+
+####Data sets
+
+The first index of an array is zero, not one.
+
+####Properties
+
+The two typical ways to access properties in JavaScript are with a dot and
+with square brackets.
+Both value.x and value[x] access a property on value — but not necessarily the same property. 
+The difference is in how x is interpreted.
+When using a dot, the word after the dot is the literal name of the property.
+When using square brackets, the expression between the brackets is evaluated
+to get the property name. Whereas value.x fetches the property of value
+named “x”, value[x] tries to evaluate the expression x and uses the result as
+the property name.
+
+####Methods
+
+The push method adds values to the end of an array, and the pop method
+does the opposite, removing the last value in the array and returning it. So the thing that 
+was added last is removed first.
+```javascript
+let sequence = [1, 2, 3];
+sequence.push(4);
+sequence.push(5);
+console.log(sequence);
+// → [1, 2, 3, 4, 5]
+console.log(sequence.pop());
+// → 5
+console.log(sequence);
+// → [1, 2, 3, 4]
+```
+
+####Further arrayology
+
+The corresponding methods for adding and removing
+things at the start of an array are called unshift and shift.
+
+```javascript
+let todoList = [];
+function remember(task) {
+todoList.push(task);
+}
+function getTask() {
+return todoList.shift();
+}
+function rememberUrgently(task) {
+todoList.unshift(task);
+}
+```
+
+To search for a specific value, arrays provide an indexOf method. It goes
+through the array from the start to the end, and returns the index at which
+the requested value was found—or -1 if it wasn’t found. To search from the
+end instead of the start, there’s a similar method called lastIndexOf .
+
+```javascript
+console.log([1, 2, 3, 2, 1].indexOf(2));
+// → 1
+console.log([1, 2, 3, 2, 1].lastIndexOf(2));
+// → 3
+```
+
+Both indexOf and lastIndexOf take an optional second argument that indi-
+cates where to start searching.
+Another fundamental array method is slice , which takes start and end in-
+dices and returns an array that has only the elements between them. The start
+index is inclusive, the end index exclusive.
+
+```javascript
+console.log([0, 1, 2, 3, 4].slice(2, 4));
+// → [2, 3]
+console.log([0, 1, 2, 3, 4].slice(2));
+// → [2, 3, 4]
+```
+
+When the end index is not given, slice will take all of the elements after the
+start index. You can also omit the start index to copy the entire array.
+The concat method can be used to glue arrays together to create a new array,
+similar to what the + operator does for strings.
+
+```javascript
+function remove(array, index) {
+return array.slice(0, index)
+.concat(array.slice(index + 1));
+}
+console.log(remove(["a", "b", "c", "d", "e"], 2));
+// → ["a", "b", "d", "e"]
+```
+
+####Strings and their properties
