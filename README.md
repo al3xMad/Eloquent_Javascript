@@ -375,7 +375,7 @@ console.log("  okay \n ".trim());
 // ? okay
 ```
 
-We have already seen the string type?s length property. Accessing the individual characters in a string can be done with the charAt method but also by simply reading numeric properties, like you?d do for an array.
+We have already seen the string type's length property. Accessing the individual characters in a string can be done with the charAt method but also by simply reading numeric properties, like you'd do for an array.
 
 ```javascript
 var string = "abc";
@@ -386,3 +386,138 @@ console.log(string.charAt(0));
 console.log(string[1]);
 // ? b
 ```
+
+####The math object
+
+If we want a whole random number instead of a fractional one, we can use
+Math.floor (which rounds down to the nearest whole number) on the result of
+Math.random .
+
+```javascript
+console.log(Math.floor(Math.random() * 10));
+// → 2
+```
+
+Multiplying the random number by 10 gives us a number greater than or
+equal to zero and below 10. Since Math.floor rounds down, this expression
+will produce, with equal chance, any number from 0 through 9.
+
+There are also the functions Math.ceil (for “ceiling”, which rounds up to
+a whole number), Math.round (to the nearest whole number), and Math.abs ,
+which takes the absolute value of a number, meaning it negates negative values
+but leaves positive ones as they are.
+
+####Summary
+
+Most values in JavaScript have properties, the exceptions being null and
+undefined . Properties are accessed using value.prop or value["prop"] .
+
+You can iterate over arrays using a special kind of for loop— for (let
+element of array) .
+
+## 5. Higher-Order Functions
+
+Since “doing something” can be represented as a function and functions are just
+values, we can pass our action as a function value.
+```javascript
+function repeat(n, action) {
+  for (let i = 0; i < n; i++) {
+    action(i);
+  }
+}
+repeat(3, console.log);
+// → 0
+// → 1
+// → 2
+```
+You don’t have to pass a predefined function to repeat . Often, you’d want
+to create a function value on the spot instead.
+```javascript
+let labels = [];
+  repeat(5, i => {
+    labels.push(`Unit ${i + 1}`);
+  });
+console.log(labels);
+// → ["Unit 1", "Unit 2", "Unit 3", "Unit 4", "Unit 5"]
+```
+
+#### Higher-order functions
+
+Functions that operate on other functions, either by taking them as arguments
+or by returning them, are called higher-order functions.
+```javascript
+function greaterThan(n) {
+  return m => m > n;
+}
+let greaterThan10 = greaterThan(10);
+console.log(greaterThan10(11));
+// → true
+```
+
+You can have functions that change other functions.
+
+```javascript
+function noisy(f) {
+  return (...args) => {
+    console.log("calling with", args);
+    let result = f(...args);
+    console.log("called with", args, ", returned", result);
+    return result;
+  };
+}
+noisy(Math.min)(3, 2, 1);
+// → calling with [3, 2, 1]
+// → called with [3, 2, 1] , returned 1
+```
+
+You can even write functions that provide new types of control flow.
+
+```javascript
+function unless(test, then) {
+  if (!test) then();
+}
+repeat(3, n => {
+  unless(n % 2 == 1, () => {
+    console.log(n, "is even");
+  });
+});
+// → 0 is even
+// → 2 is even
+```
+
+There is a built-in array method, forEach that provides something like a
+for / of loop as a higher-order function.
+```javascript
+["A", "B"].forEach(l => console.log(l));
+// → A
+// → B
+```
+
+#### Transforming with map
+The map method transforms an array by applying a function to all of its
+elements and building a new array from the returned values. The new array
+will have the same length as the input array, but its content will have been
+mapped to a new form by the function.
+```javascript
+function map(array, transform) {
+  let mapped = [];
+  for (let element of array) {
+    mapped.push(transform(element));
+  }
+  return mapped;
+}
+
+let rtlScripts = SCRIPTS.filter(s => s.direction == "rtl");
+console.log(map(rtlScripts, s => s.name));
+
+// → ["Adlam", "Arabic", "Imperial Aramaic", ...]
+```
+
+#### Recognizing text
+It uses another array method— findIndex . This method is somewhat like
+indexOf , but instead of looking for a specific value, it finds the first value for
+which the given function returns true. Like indexOf , it returns -1 when no such
+element is found.
+
+## 6. The secret life of objects
+
